@@ -19,7 +19,7 @@ int main(void) {
          case 1: registrar();           break;
          case 2: pesquisarNome();       break;
          case 3: alterar();             break;
-         case 4: return 0;              break;
+         case 4: remover();              break;
          case 5: return 0;              break;
       }
    } while (opcao);

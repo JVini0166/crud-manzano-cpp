@@ -12,7 +12,7 @@ struct {                     // DEFINI��O DA CLASSE
     char cpf[12];                 // DATA DE NASCIMENTO DA PESSOA
     char telefone[16];
     char endereco[60];
-    char status;
+    char status[2];
 
 } funcionario;
 
@@ -57,7 +57,7 @@ int encontraPosicao(char *pesq) {                                              /
     bool acha = false;                                                          // FLAG "LEVANTADA" QUANDO O REGISTRO � ENCONTRADO
     while (not arquivo.eof() and not acha) {                                    // ENQUANTO N�O CHEGOU AO FINAL DO ARQUIVO E N�O ENCONTROU
         arquivo.read(reinterpret_cast<char*>(&funcionario), sizeof(funcionario));  // INSERE OS DADOS DE UM REGISTRO NO OBJETO
-        if (strcmp(pesq, funcionario.nome) == 0 and funcionario.status == '1') { // SE O NOME PROCURADO CORRESPONDE AO REGISTRO E ESSE EST� ATIVO
+        if (strcmp(pesq, funcionario.nome) == 0 and funcionario.status[0] == '1') { // SE O NOME PROCURADO CORRESPONDE AO REGISTRO E ESSE EST� ATIVO
             acha = true;                                                          // "LEVANTA A FLAG" POIS ENCONTROU O REGISTRO
             pos = contador;                                                       // ARMAZENA A POSICAO DO REGISTRO
         }
@@ -66,6 +66,16 @@ int encontraPosicao(char *pesq) {                                              /
     arquivo.flush();                                                            // ESVAZIA O BUFFER DE SA�DA PARA O ARQUIVO
     arquivo.close();                                                            // FECHA O ARQUIVO
     return pos;                                                                 // RETORNA A POSI��O NA QUAL O REGISTRO EST� LOCALIZADO
+}
+
+void excluirPessoa(int pos) {                                                    // "EXCLUI" UM REGISTRO
+    /// NA REALIDADE O REGISTRO N�O � EXCLU�DO, APENAS TEM O STATUS ALTERADO:
+    strcpy(funcionario.status, "0");
+    fstream arquivo("banco.dbc",ios_base::in | ios_base::out | ios_base::binary); // ABERTURA DO ARQUIVO PARA LEITURA E ESCRITA DE DADOS EM BIN�RIO
+    arquivo.seekp(pos * sizeof(funcionario));                                          // POSICIONA O PONTEIRO NA POSICAO DO REGISTRO SOLICITADO
+    arquivo.write(reinterpret_cast<char*>(&funcionario), sizeof(funcionario));      // GRAVA OS DADOS NO ARQUIVO NA POSI��O SELECIONADA
+    arquivo.flush();                                                              // ESVAZIA O BUFFER DE SA�DA PARA O ARQUIVO
+    arquivo.close();                                                              // FECHA O ARQUIVO
 }
 
 void alteraNome(int pos) {                                                        // ALTERA O NOME DE UM REGISTRO
@@ -83,7 +93,7 @@ bool buscaNome(char *pesq) {                                                  //
     bool acha = false;                                                         // FLAG "LEVANTADA" QUANDO O REGISTRO � ENCONTRADO
     while (not arquivo.eof() and not acha) {                                   // ENQUANTO N�O CHEGOU AO FINAL DO ARQUIVO E N�O ENCONTROU
         arquivo.read(reinterpret_cast<char*>(&funcionario), sizeof(funcionario)); // INSERE OS DADOS DE UM REGISTRO NO OBJETO
-        if (strcmp(pesq, funcionario.nome) == 0 and funcionario.status == '1')  // SE O NOME PROCURADO CORRESPONDE AO REGISTRO E ESSE EST� ATIVO
+        if (strcmp(pesq, funcionario.nome) == 0 and funcionario.status[0] == '1')  // SE O NOME PROCURADO CORRESPONDE AO REGISTRO E ESSE EST� ATIVO
             acha = true;                                                         // "LEVANTA A FLAG" POIS ENCONTROU O REGISTRO
     }
     arquivo.flush();                                                           // ESVAZIA O BUFFER DE SA�DA PARA O ARQUIVO
@@ -143,7 +153,7 @@ void registrar(void) {
             strcpy(funcionario.cargo, "ATENDENTE"); break;
     }
 
-    funcionario.status = '1';
+    funcionario.status[0] = '1';
 
     fstream arquivo;
     arquivo.open("banco.dbc", ios_base::out | ios_base::app |
@@ -156,6 +166,30 @@ void registrar(void) {
     arquivo.close();
     cout << "\n\n";
     pausa(1);
+}
+
+void remover(void) {                                                           // REMOVE UM REGISTRO
+    limpa();                                                                    // LIMPA A TELA E POSICIONA O CURSOR
+    char opcao;                                                                 // ARMAZENA A OPCAO DO MENU
+    cout << " Remover registro\n\n\n\n";
+    cout << " Entre com o nome .......: ";
+    lerstr(pnome);                                                              // ENTRADA FORMATADA PARA CARACTERES MAI�SCULOS
+    cout << "\n\n";
+    if (buscaNome(pnome)) {                                                     // SE ENCONTROU O REGISTRO
+        cout << " Telefone .....: " << funcionario.telefone << "\n\n\n\n"; // ESCREVE A DATA DE NASCIMENTO
+        cout << " Remover cadastro [S]im ou [N]ao: ";
+        cin >> opcao;                                                            // LEITURA DA OP��O DESEJADA
+        cin.ignore(80, '\n');                                                    // LIMPA BUFFER DO TECLADO
+        if (opcao == 'S' or opcao == 's') {                                      // SE FOR [S/s]IM
+            excluirPessoa(encontraPosicao(pnome));                                // CHAMADA DA SUB-ROTINA PARA EXCLUS�O
+            cout << "\n\n\n Cadastro removido. ";
+        }
+        else                                                                     // SE FOR QUALQUER OUTRO CARACTERE
+            cout << "\n\n\n Cadastro nao removido. ";
+    }
+    else                                                                        // SE N�O ENCONTROU O REGISTRO
+        cout << "\n\n Registro nao encontrado. ";
+    pausa(0);                                                                   // PAUSA SEM MENSAGEM ADICIONAL
 }
 
 void alterar(void) {
