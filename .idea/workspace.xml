@@ -15,6 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="13e014dc-9151-4c8f-998e-e396febaa821" name="Changes" comment="" />
+    <list id="7861b655-21fd-4f3e-a083-bf9f207ab1d5" name="Changes by diegusto" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -72,7 +73,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1657486209996</updated>
-      <workItem from="1657486211216" duration="669000" />
+      <workItem from="1657486211216" duration="1269000" />
     </task>
     <servers />
   </component>

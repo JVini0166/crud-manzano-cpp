@@ -1,4 +1,5 @@
 #include <iostream>
+#include <windows.h>
 using namespace std;
 
 #if defined _WIN32 || defined _WIN64

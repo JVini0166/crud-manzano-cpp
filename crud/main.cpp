@@ -15,7 +15,7 @@ int main(void) {
       opcao = menu();
       switch(opcao) {
          case 1: registrar();    break;
-         case 2: return 0;       break;
+         case 2: pesquisarNome();       break;
          case 3: return 0;       break;
          case 4: return 0;       break;
          case 5: return 0;       break;
