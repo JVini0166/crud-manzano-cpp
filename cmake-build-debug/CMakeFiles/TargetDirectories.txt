@@ -1,0 +1,3 @@
+C:/Users/josev/OneDrive/Documentos/GitHub/crud-manzano-cpp/cmake-build-debug/CMakeFiles/crud_manzano_cpp.dir
+C:/Users/josev/OneDrive/Documentos/GitHub/crud-manzano-cpp/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/josev/OneDrive/Documentos/GitHub/crud-manzano-cpp/cmake-build-debug/CMakeFiles/rebuild_cache.dir

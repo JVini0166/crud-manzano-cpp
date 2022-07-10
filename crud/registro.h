@@ -1,8 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <fstream>
-#include <curses.h>
-#include <ncurses.h>
+#include <conio.h>
 
 using namespace std;
 
