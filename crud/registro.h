@@ -2,7 +2,6 @@
 #include <cstring>
 #include <fstream>
 #include <conio.h>
-
 using namespace std;
 
 struct {                     // DEFINI��O DA CLASSE
@@ -11,8 +10,11 @@ struct {                     // DEFINI��O DA CLASSE
     char cpf[12];                 // DATA DE NASCIMENTO DA PESSOA
     char telefone[16];
     char endereco[60];
+    bool status;
 
 } funcionario;
+
+char pnome[41];
 
 void pausa(short status) {                         // PARA PAUSAR PROGRAMA E EXIBIR MENSAGEM
     if (status)                                     // PARA ESCREVER A MENSAGEM ADICIONAL
@@ -47,55 +49,55 @@ void lerstr(char *s) {          // CORRIGE A ENTRADA PARA CARACTERES MAI�SCULO
     *s = '\0';                   // CARACTERE DE FINALIZAÇÃO DE UMA STRING
 }
 
-bool buscaNome(char *pesq) {                                                  // INFORMA DE EXISTE UM NOME PESQUISADO
-    fstream arquivo("banco.dbc", ios_base::in | ios_base::binary);             // ABERTURA DO ARQUIVO PARA LEITURA DE DADOS EM BIN�RIO
-    bool acha = false;                                                         // FLAG "LEVANTADA" QUANDO O REGISTRO � ENCONTRADO
-    while (not arquivo.eof() and not acha) {                                   // ENQUANTO N�O CHEGOU AO FINAL DO ARQUIVO E N�O ENCONTROU
-        arquivo.read(reinterpret_cast<char*>(&pessoa), sizeof(class Cadastro)); // INSERE OS DADOS DE UM REGISTRO NO OBJETO
-        if (strcmp(pesq, pessoa.getNome()) == 0 and pessoa.getStatus() == '1')  // SE O NOME PROCURADO CORRESPONDE AO REGISTRO E ESSE EST� ATIVO
-            acha = true;                                                         // "LEVANTA A FLAG" POIS ENCONTROU O REGISTRO
-    }
-    arquivo.flush();                                                           // ESVAZIA O BUFFER DE SA�DA PARA O ARQUIVO
-    arquivo.close();                                                           // FECHA O ARQUIVO
-    return acha;                                                               // RETORNA SE ACHOU OU N�O O REGISTRO PROCURADO
-}
-
-void pesquisarNome(void) {                                               // PESQUISA POR NOME E EXIBE O REGISTRO
-    limpa();                                                              // LIMPA A TELA E POSICIONA O CURSOR
-    cout << " Pesquisar registro por nome\n\n\n\n";
-    cout << " Entre com o nome .......: ";
-    lerstr(pnome);                                                        // ENTRADA FORMATADA PARA CARACTERES MAI�SCULOS
-    cout << "\n\n";
-    if (buscaNome(pnome)) {                                               // SE ENCONTROU O REGISTRO
-        /// NESSE MOMENTO OS DADOS CORRETOS EST�O NOS ATRIBUTOS DO OBJETO
-        cout << " Data de nascimento .....: " << pessoa.getData() << " ("; // ESCREVE A DATA DE NASCIMENTO
-        escreveSemana(pessoa.getData());                                   // ESCREVE O DIA DA SEMANA DA DATA
-        cout << ")\n\n";
-        cout << " Data atual do sistema ..: " << dataAtual() << " (";      // ESCREVE A DATA ATUAL DO SISTEMA
-        escreveSemana(dataAtual());                                        // ESCREVE O DIA DA SEMANA DA DATA
-        cout << ")\n\n";
-        cout << " Idade ..................: ";
-        escreveIdade(calcData(pessoa.getData()));                          // ESCREVE IDADE EM DIA(S), MES(ES) E ANO(S)
-        cout << "\n\n\n\n ";
-    }
-    else                                                                  // SE N�O ENCONTROU O REGISTRO
-        cout << "\n\n Registro nao encontrado. ";
-    pausa(0);                                                             // PAUSA SEM MENSAGEM ADICIONAL
-}
+//bool buscaNome(char *pesq) {                                                  // INFORMA DE EXISTE UM NOME PESQUISADO
+//    fstream arquivo("banco.dbc", ios_base::in | ios_base::binary);             // ABERTURA DO ARQUIVO PARA LEITURA DE DADOS EM BIN�RIO
+//    bool acha = false;                                                         // FLAG "LEVANTADA" QUANDO O REGISTRO � ENCONTRADO
+//    while (not arquivo.eof() and not acha) {                                   // ENQUANTO N�O CHEGOU AO FINAL DO ARQUIVO E N�O ENCONTROU
+//        arquivo.read(reinterpret_cast<char*>(&funcionario), sizeof(funcionario)); // INSERE OS DADOS DE UM REGISTRO NO OBJETO
+//        if (strcmp(pesq, funcionario.nome) == 0 and funcionario.status == '1')  // SE O NOME PROCURADO CORRESPONDE AO REGISTRO E ESSE EST� ATIVO
+//            acha = true;                                                         // "LEVANTA A FLAG" POIS ENCONTROU O REGISTRO
+//    }
+//    arquivo.flush();                                                           // ESVAZIA O BUFFER DE SA�DA PARA O ARQUIVO
+//    arquivo.close();                                                           // FECHA O ARQUIVO
+//    return acha;                                                               // RETORNA SE ACHOU OU N�O O REGISTRO PROCURADO
+//}
+//
+//void pesquisarNome(void) {                                               // PESQUISA POR NOME E EXIBE O REGISTRO
+//    limpa();                                                              // LIMPA A TELA E POSICIONA O CURSOR
+//    cout << " Pesquisar registro por nome\n\n\n\n";
+//    cout << " Entre com o nome .......: ";
+//    lerstr(pnome);                                                        // ENTRADA FORMATADA PARA CARACTERES MAI�SCULOS
+//    cout << "\n\n";
+//    if (buscaNome(pnome)) {                                               // SE ENCONTROU O REGISTRO
+//        /// NESSE MOMENTO OS DADOS CORRETOS EST�O NOS ATRIBUTOS DO OBJETO
+////        cout << " Data de nascimento .....: " << pessoa.getData() << " ("; // ESCREVE A DATA DE NASCIMENTO
+////        escreveSemana(pessoa.getData());                                   // ESCREVE O DIA DA SEMANA DA DATA
+////        cout << ")\n\n";
+////        cout << " Data atual do sistema ..: " << dataAtual() << " (";      // ESCREVE A DATA ATUAL DO SISTEMA
+////        escreveSemana(dataAtual());                                        // ESCREVE O DIA DA SEMANA DA DATA
+////        cout << ")\n\n";
+////        cout << " Idade ..................: ";
+////        escreveIdade(calcData(pessoa.getData()));                          // ESCREVE IDADE EM DIA(S), MES(ES) E ANO(S)
+////        cout << "\n\n\n\n ";
+//    }
+//    else                                                                  // SE N�O ENCONTROU O REGISTRO
+//        cout << "\n\n Registro nao encontrado. ";
+//    pausa(0);                                                             // PAUSA SEM MENSAGEM ADICIONAL
+//}
 
 void registrar(void) {
     int opcargo;
 
     cout << " Cadastrar registro\n\n\n";
     cout << " Entre com o nome:\n ";
-    cin >> funcionario.nome;
+    lerstr(funcionario.nome);
     cout << "\n\n";
     cout << "Entre com o CPF: "; //verificação cpf
     cin >> funcionario.cpf;
     cout << "Entre com o telefone: ";
     cin >> funcionario.telefone;
     cout << "Entre com o endereco: ";
-    cin >> funcionario.endereco;
+    lerstr(funcionario.endereco);
     cout << " Entre com o cargo:\n ";
     cout << " [1] Gerente " << endl;
     cout << " [2] Supervisor " << endl;
