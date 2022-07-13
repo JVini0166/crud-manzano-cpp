@@ -21,7 +21,7 @@ char auxcpf[13];
 
 void criarArquivo(void) {
     fstream arquivo;
-    arquivo.open("banco.dbc", ios_base::out | ios_base::binary);
+    arquivo.open("empresa.db", ios_base::out | ios_base::binary);
     arquivo.close();
 }
 
@@ -57,7 +57,7 @@ void lerstr(char *s) {
 }
 
 int encontraPosicao(char *pesq) {
-    fstream arquivo("banco.dbc", ios_base::in | ios_base::binary);
+    fstream arquivo("empresa.db", ios_base::in | ios_base::binary);
     unsigned int pos = -1, contador = 0;
     bool encontrado = false;
     while (not arquivo.eof() and not encontrado) {
@@ -76,7 +76,7 @@ int encontraPosicao(char *pesq) {
 void excluirPessoa(int pos) {
 
     strcpy(funcionario.status, "0");
-    fstream arquivo("banco.dbc", ios_base::in | ios_base::out | ios_base::binary);
+    fstream arquivo("empresa.db", ios_base::in | ios_base::out | ios_base::binary);
     arquivo.seekp(pos * sizeof(funcionario));
     arquivo.write(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
     arquivo.flush();
@@ -86,7 +86,7 @@ void excluirPessoa(int pos) {
 void alteraNome(int pos) {
     lerstr(auxnome);
     strcpy(funcionario.nome, auxnome);
-    fstream arquivo("banco.dbc", ios_base::in | ios_base::out | ios_base::binary);
+    fstream arquivo("empresa.db", ios_base::in | ios_base::out | ios_base::binary);
     arquivo.seekp(pos * sizeof(funcionario));
     arquivo.write(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
     arquivo.flush();
@@ -94,7 +94,7 @@ void alteraNome(int pos) {
 }
 
 bool buscaNome(char *pesq) {
-    fstream arquivo("banco.dbc", ios_base::in | ios_base::binary);
+    fstream arquivo("empresa.db", ios_base::in | ios_base::binary);
     bool encontrado = false;
     while (not arquivo.eof() and not encontrado) {
         arquivo.read(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
@@ -107,7 +107,7 @@ bool buscaNome(char *pesq) {
 }
 
 bool buscaCpf(char *pesq) {
-    fstream arquivo("banco.dbc", ios_base::in | ios_base::binary);
+    fstream arquivo("empresa.db", ios_base::in | ios_base::binary);
     bool encontrado = false;
     while (not arquivo.eof() and not encontrado) {
         arquivo.read(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
@@ -120,7 +120,7 @@ bool buscaCpf(char *pesq) {
 }
 
 bool buscaCargo(char *pesq) {
-    fstream arquivo("banco.dbc", ios_base::in | ios_base::binary);
+    fstream arquivo("empresa.db", ios_base::in | ios_base::binary);
     bool encontrado = false;
     while (not arquivo.eof() and not encontrado) {
         arquivo.read(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
@@ -223,7 +223,7 @@ void registrar(void) {
     funcionario.status[0] = '1';
     if (existeHierarquia) {
         fstream arquivo;
-        arquivo.open("banco.dbc", ios_base::out | ios_base::app |
+        arquivo.open("empresa.db", ios_base::out | ios_base::app |
                                   ios_base::binary);
         arquivo.seekp(0,
                       ios::end);
