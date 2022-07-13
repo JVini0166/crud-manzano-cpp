@@ -3,112 +3,154 @@
 #include <fstream>
 #include <conio.h>
 #include "manzano.h"
-
 using namespace std;
 
-struct {                     // DEFINI��O DA CLASSE
-    char cargo[11];                   // PARA SABER SE O CADASTRO EST� OU N�O ATIVO
-    char nome[41];                 // NOME DA PESSOA
-    char cpf[12];                 // DATA DE NASCIMENTO DA PESSOA
+struct {
+    char cargo[11];
+    char nome[41];
+    char cpf[12];
     char telefone[16];
     char endereco[60];
     char status[2];
 
 } funcionario;
 
-char pnome[41];
+char auxnome[41];
+char auxcpf[13];
 
-void pausa(short status) {                         // PARA PAUSAR PROGRAMA E EXIBIR MENSAGEM
-    if (status)                                     // PARA ESCREVER A MENSAGEM ADICIONAL
-        cout << " Concluido com sucesso. ";          // MENSAGEM ADICIONAL
-    cout << "Pressione <Enter> para continuar... "; // MENSAGEM PADR�O
-    cin.get();                                      // SOLICITA LEITURA DE CARACTERE PARA PAUSAR EXECU��O
+void criarArquivo(void) {
+    fstream arquivo;
+    arquivo.open("banco.dbc", ios_base::out | ios_base::binary);
+    arquivo.close();
 }
 
-char upper(char e) {                        // TRANSFORMA CARACTERE MIN�SCULO EM MAI�SCULO
-    // SE 97 <= CARACTERE <= 122 ENT�O ELE � MIN�SCULO\
-                                            // DIMINUINDO 32 CARACTERES DELE, � RETORNADA SUA VERS�O\
-                                            // MAI�SCULA CORRESPONDENTE NA TABELA ASCII
+void pausa(short status) {
+    if (status)
+        cout << " Concluido com sucesso. ";
+    cout << "Pressione <Enter> para continuar... ";
+    cin.get();
+}
+
+char upper(char e) {
+
+
+
     return (97 <= e && e <= 122) ? e-32 : e;
 }
 
-void lerstr(char *s) {          // CORRIGE A ENTRADA PARA CARACTERES MAI�SCULOS
-    char c;                      // USADA PARA CADA CARACTERE LIDO
-    int pos = 0;                 // QUANTIDADE DE CARACTERES LIDOS
+void lerstr(char *s) {
+    char c;
+    int pos = 0;
     do {
-        c = upper(getch());       // ARMAZENA O CARACTERE LIDO NA VARI�VEL c
-        if (isprint(c)) {         // SE c FOR UM CARACTERE QUE PODE SER IMPRESSO
-            cout << c;             // IMPRIME c NA TELA
-            *s++ = c;              // ADICIONA c NA POSIS�O ATUAL DO PONTEIRO E VAI PARA PR�XIMA POSI��O
-            ++pos;                 // AUMENTA A QUANTIDADE DE CARACTERES LIDOS
+        c = upper(getch());
+        if (isprint(c)) {
+            cout << c;
+            *s++ = c;
+            ++pos;
         }
-        else if (c == 8 && pos) { // SE c FOR A TECLA <BACKSPACE>
-            cout << "\b \b";       // APAGA O CARACTERE ANTERIOR
-            --pos;                 // DIMINUI A QUANTIDADE DE CARACTERES LIDOS
-            --s;                   // VOLTA UMA POSIÇÃO DO PONTEIRO
+        else if (c == 8 && pos) {
+            cout << "\b \b";
+            --pos;
+            --s;
         }
-    } while (c != 13);           // LER ENQUANTO O <Enter> NÃO FOR ACIONADO
-    *s = '\0';                   // CARACTERE DE FINALIZAÇÃO DE UMA STRING
+    } while (c != 13);
+    *s = '\0';
 }
 
-int encontraPosicao(char *pesq) {                                              // RETORNA A POSI��O DO REGISTRO NO ARQUIVO
-    fstream arquivo("banco.dbc", ios_base::in | ios_base::binary);              // ABERTURA DO ARQUIVO PARA LEITURA DE DADOS EM BIN�RIO
-    unsigned int pos = -1, contador = 0;                                        // POSI��O DO REGISTRO PROCURADO E QUANTIDADE DE REGISTROS NO ARQUIVO
-    bool acha = false;                                                          // FLAG "LEVANTADA" QUANDO O REGISTRO � ENCONTRADO
-    while (not arquivo.eof() and not acha) {                                    // ENQUANTO N�O CHEGOU AO FINAL DO ARQUIVO E N�O ENCONTROU
-        arquivo.read(reinterpret_cast<char*>(&funcionario), sizeof(funcionario));  // INSERE OS DADOS DE UM REGISTRO NO OBJETO
-        if (strcmp(pesq, funcionario.nome) == 0 and funcionario.status[0] == '1') { // SE O NOME PROCURADO CORRESPONDE AO REGISTRO E ESSE EST� ATIVO
-            acha = true;                                                          // "LEVANTA A FLAG" POIS ENCONTROU O REGISTRO
-            pos = contador;                                                       // ARMAZENA A POSICAO DO REGISTRO
+int encontraPosicao(char *pesq) {
+    fstream arquivo("banco.dbc", ios_base::in | ios_base::binary);
+    unsigned int pos = -1, contador = 0;
+    bool encontrado = false;
+    while (not arquivo.eof() and not encontrado) {
+        arquivo.read(reinterpret_cast<char*>(&funcionario), sizeof(funcionario));
+        if (strcmp(pesq, funcionario.nome) == 0 and funcionario.status[0] == '1') {
+            encontrado = true;
+            pos = contador;
         }
-        contador++;                                                              // INCREMENTA A QUANTIDADE DE REGISTROS
+        contador++;
     }
-    arquivo.flush();                                                            // ESVAZIA O BUFFER DE SA�DA PARA O ARQUIVO
-    arquivo.close();                                                            // FECHA O ARQUIVO
-    return pos;                                                                 // RETORNA A POSI��O NA QUAL O REGISTRO EST� LOCALIZADO
+    arquivo.flush();
+    arquivo.close();
+    return pos;
 }
 
-void excluirPessoa(int pos) {                                                    // "EXCLUI" UM REGISTRO
-    /// NA REALIDADE O REGISTRO N�O � EXCLU�DO, APENAS TEM O STATUS ALTERADO:
+void excluirPessoa(int pos) {
+
     strcpy(funcionario.status, "0");
-    fstream arquivo("banco.dbc",ios_base::in | ios_base::out | ios_base::binary); // ABERTURA DO ARQUIVO PARA LEITURA E ESCRITA DE DADOS EM BIN�RIO
-    arquivo.seekp(pos * sizeof(funcionario));                                          // POSICIONA O PONTEIRO NA POSICAO DO REGISTRO SOLICITADO
-    arquivo.write(reinterpret_cast<char*>(&funcionario), sizeof(funcionario));      // GRAVA OS DADOS NO ARQUIVO NA POSI��O SELECIONADA
-    arquivo.flush();                                                              // ESVAZIA O BUFFER DE SA�DA PARA O ARQUIVO
-    arquivo.close();                                                              // FECHA O ARQUIVO
+    fstream arquivo("banco.dbc",ios_base::in | ios_base::out | ios_base::binary);
+    arquivo.seekp(pos * sizeof(funcionario));
+    arquivo.write(reinterpret_cast<char*>(&funcionario), sizeof(funcionario));
+    arquivo.flush();
+    arquivo.close();
 }
 
-void alteraNome(int pos) {                                                        // ALTERA O NOME DE UM REGISTRO
-    lerstr(pnome);                                                                // ENTRADA FORMATADA PARA CARACTERES MAI�SCULOS
-    strcpy(funcionario.nome, pnome);
-    fstream arquivo("banco.dbc",ios_base::in | ios_base::out | ios_base::binary); // ABERTURA DO ARQUIVO PARA LEITURA E ESCRITA DE DADOS EM BIN�RIO
-    arquivo.seekp(pos * sizeof(funcionario));                                          // POSICIONA O PONTEIRO NA POSICAO DO REGISTRO SOLICITADO
-    arquivo.write(reinterpret_cast<char*>(&funcionario), sizeof(funcionario));      // GRAVA OS DADOS NO ARQUIVO NA POSI��O SELECIONADA
-    arquivo.flush();                                                              // ESVAZIA O BUFFER DE SA�DA PARA O ARQUIVO
-    arquivo.close();                                                              // FECHA O ARQUIVO
+void alteraNome(int pos) {
+    lerstr(auxnome);
+    strcpy(funcionario.nome, auxnome);
+    fstream arquivo("banco.dbc",ios_base::in | ios_base::out | ios_base::binary);
+    arquivo.seekp(pos * sizeof(funcionario));
+    arquivo.write(reinterpret_cast<char*>(&funcionario), sizeof(funcionario));
+    arquivo.flush();
+    arquivo.close();
 }
 
-bool buscaNome(char *pesq) {                                                  // INFORMA DE EXISTE UM NOME PESQUISADO
-    fstream arquivo("banco.dbc", ios_base::in | ios_base::binary);             // ABERTURA DO ARQUIVO PARA LEITURA DE DADOS EM BIN�RIO
-    bool acha = false;                                                         // FLAG "LEVANTADA" QUANDO O REGISTRO � ENCONTRADO
-    while (not arquivo.eof() and not acha) {                                   // ENQUANTO N�O CHEGOU AO FINAL DO ARQUIVO E N�O ENCONTROU
-        arquivo.read(reinterpret_cast<char*>(&funcionario), sizeof(funcionario)); // INSERE OS DADOS DE UM REGISTRO NO OBJETO
-        if (strcmp(pesq, funcionario.nome) == 0 and funcionario.status[0] == '1')  // SE O NOME PROCURADO CORRESPONDE AO REGISTRO E ESSE EST� ATIVO
-            acha = true;                                                         // "LEVANTA A FLAG" POIS ENCONTROU O REGISTRO
+bool buscaNome(char *pesq) {
+    fstream arquivo("banco.dbc", ios_base::in | ios_base::binary);
+    bool encontrado = false;
+    while (not arquivo.eof() and not encontrado) {
+        arquivo.read(reinterpret_cast<char*>(&funcionario), sizeof(funcionario));
+        if (strcmp(pesq, funcionario.nome) == 0 and funcionario.status[0] == '1')
+            encontrado = true;
     }
-    arquivo.flush();                                                           // ESVAZIA O BUFFER DE SA�DA PARA O ARQUIVO
-    arquivo.close();                                                           // FECHA O ARQUIVO
-    return acha;                                                               // RETORNA SE ACHOU OU N�O O REGISTRO PROCURADO
+    arquivo.flush();
+    arquivo.close();
+    return encontrado;
 }
 
-void pesquisarNome(void) {                                               // PESQUISA POR NOME E EXIBE O REGISTRO
-    limpa();                                                              // LIMPA A TELA E POSICIONA O CURSOR
+bool buscaCpf(char *pesq) {
+    fstream arquivo("banco.dbc", ios_base::in | ios_base::binary);
+    bool encontrado = false;
+    while (not arquivo.eof() and not encontrado) {
+        arquivo.read(reinterpret_cast<char*>(&funcionario), sizeof(funcionario));
+        if (strcmp(pesq, funcionario.cpf) == 0 and funcionario.status[0] == '1')
+            encontrado = true;
+    }
+    arquivo.flush();
+    arquivo.close();
+    return encontrado;
+}
+
+void pesquisarNome(void) {
+    limpa();
 
     cout << " Pesquisar registro por nome\n\n\n\n";
     cout << " Entre com o nome .......: ";
-    lerstr(pnome);                                                        // ENTRADA FORMATADA PARA CARACTERES MAI�SCULOS
+    lerstr(auxnome);
     cout << "\n\n";
-    if (buscaNome(pnome)) {                                               // SE ENCONTROU O REGISTRO
+    if (buscaNome(auxnome)) {
+    cout << "Nome Funcionário: " << endl;
+    cout << funcionario.nome << endl;
+    cout << "Cargo: " << endl;
+    cout << funcionario.cargo;
+    cout << "Numero de telefone: " <<endl;
+    cout << funcionario.telefone << endl;
+    cout << "CPF: " << endl;
+    cout << funcionario.cpf << endl;
+    cout << "Endereço: " << endl;
+    cout << funcionario.endereco << endl;
+    }
+    else
+        cout << "\n\n Registro nao encontrado. ";
+    pausa(0);
+}
+
+void pesquisarCpf(void) {
+    limpa();
+    cout << " Pesquisar registro por CPF\n\n\n\n";
+    cout << " Entre com o CPF (apenas numeros) .......: ";
+    lerstr(auxcpf);
+    cout << "\n\n";
+    if (buscaCpf(auxcpf)) {
     cout << "Nome Funcionário: " << endl;
     cout << funcionario.nome << endl;
     cout << "Cargo:" << endl;
@@ -120,9 +162,9 @@ void pesquisarNome(void) {                                               // PESQ
     cout << "Endereço: " << endl;
     cout << funcionario.endereco << endl;
     }
-    else                                                                  // SE N�O ENCONTROU O REGISTRO
+    else
         cout << "\n\n Registro nao encontrado. ";
-    pausa(0);                                                             // PAUSA SEM MENSAGEM ADICIONAL
+    pausa(0);
 }
 
 void registrar(void) {
@@ -132,7 +174,7 @@ void registrar(void) {
     cout << " Entre com o nome:\n ";
     lerstr(funcionario.nome);
     cout << "\n\n";
-    cout << "Entre com o CPF: "; //verificação cpf
+    cout << "Entre com o CPF (apenas numeros): ";
     cin >> funcionario.cpf;
     cout << "Entre com o telefone: ";
     cin >> funcionario.telefone;
@@ -168,28 +210,28 @@ void registrar(void) {
     pausa(1);
 }
 
-void remover(void) {                                                           // REMOVE UM REGISTRO
-    limpa();                                                                    // LIMPA A TELA E POSICIONA O CURSOR
-    char opcao;                                                                 // ARMAZENA A OPCAO DO MENU
+void remover(void) {
+    limpa();
+    char opcao;
     cout << " Remover registro\n\n\n\n";
     cout << " Entre com o nome .......: ";
-    lerstr(pnome);                                                              // ENTRADA FORMATADA PARA CARACTERES MAI�SCULOS
+    lerstr(auxnome);
     cout << "\n\n";
-    if (buscaNome(pnome)) {                                                     // SE ENCONTROU O REGISTRO
-        cout << " Telefone .....: " << funcionario.telefone << "\n\n\n\n"; // ESCREVE A DATA DE NASCIMENTO
+    if (buscaNome(auxnome)) {
+        cout << " Telefone .....: " << funcionario.telefone << "\n\n\n\n";
         cout << " Remover cadastro [S]im ou [N]ao: ";
-        cin >> opcao;                                                            // LEITURA DA OP��O DESEJADA
-        cin.ignore(80, '\n');                                                    // LIMPA BUFFER DO TECLADO
-        if (opcao == 'S' or opcao == 's') {                                      // SE FOR [S/s]IM
-            excluirPessoa(encontraPosicao(pnome));                                // CHAMADA DA SUB-ROTINA PARA EXCLUS�O
+        cin >> opcao;
+        cin.ignore(80, '\n');
+        if (opcao == 'S' or opcao == 's') {
+            excluirPessoa(encontraPosicao(auxnome));
             cout << "\n\n\n Cadastro removido. ";
         }
-        else                                                                     // SE FOR QUALQUER OUTRO CARACTERE
+        else
             cout << "\n\n\n Cadastro nao removido. ";
     }
-    else                                                                        // SE N�O ENCONTROU O REGISTRO
+    else
         cout << "\n\n Registro nao encontrado. ";
-    pausa(0);                                                                   // PAUSA SEM MENSAGEM ADICIONAL
+    pausa(0);
 }
 
 void alterar(void) {
@@ -202,35 +244,35 @@ void alterar(void) {
         cout << " [1] - Alterar nome.\n\n";
         cout << " [2] - Alterar data de nascimento.\n\n\n";
         cout << " Entre a opcao desejada: ";
-        cin >> opcao;                                                     // LEITURA DA OP��O DESEJADA
-        cin.ignore(80, '\n');                                             // LIMPA BUFFER DO TECLADO
-    } while (opcao != 1 and opcao != 2);                                 // EVITA OPC�O INEXISTENTE
-    if (opcao == 1) selecao = "nome";                                    // PERSONALIZA OP��O PARA ALTERA��O DE NOME
-    else selecao = "data";                                               // PERSONALIZA OP��O PARA ALTERA��O DE DATA
-//    limpa();                                                             // LIMPA A TELA E POSICIONA O CURSOR
+        cin >> opcao;
+        cin.ignore(80, '\n');
+    } while (opcao != 1 and opcao != 2);
+    if (opcao == 1) selecao = "nome";
+    else selecao = "data";
+//        limpa();
     cout << " Alterar " << selecao << " do registro\n\n\n";
     cout << endl;
     cout << " Entre com o nome:\n ";
-    lerstr(pnome);                                                       // ENTRADA FORMATADA PARA CARACTERES MAI�SCULOS
+    lerstr(auxnome);
     cout << "\n\n";
-    if (buscaNome(pnome)) {                                              // SE ENCONTROU O REGISTRO
-        /// NESSE MOMENTO OS DADOS CORRETOS EST�O NOS ATRIBUTOS DO OBJETO
-        if (opcao == 1) {                                                 // SE FOI SOLICITADA A ALTERA��O DE NOME
+    if (buscaNome(auxnome)) {
+
+        if (opcao == 1) {
             cout << " Telefone:\n ";
-            cout << funcionario.telefone << "\n\n";                            // EXIBE A DATA DE NASCIMENTO
+            cout << funcionario.telefone << "\n\n";
             cout << " Entre o novo nome:\n ";
-            alteraNome(encontraPosicao(pnome));                            // EFETUA A ALTERA��O DO NOME
-        } else {                                                          // SE FOI SOLICITADA A ALTERA��O DE NOME
-//            cout << " Telefone::\n ";
-//            cout << funcionario.telefone << "\n\n";                            // EXIBE A DATA DE NASCIMENTO
-//            cout << " Entre a nova data de nascimento:\n ";
-//            alteraData(encontraPosicao(pnome));                            // EFETUA A ALTERA��O DA DATA
+            alteraNome(encontraPosicao(auxnome));
+        } else {
+
+
+
+
         }
         cout << "\n\n\n\n";
-        pausa(1);                                                         // PAUSA COM MENSAGEM ADICIONAL
+        pausa(1);
     }
-    else {                                                               // SE N�O ENCONTROU O REGISTRO
+    else {
         cout << endl << "\n Registro nao encontrado. ";
-        pausa(0);                                                         // PAUSA SEM MENSAGEM ADICIONAL
+        pausa(0);
     }
 }

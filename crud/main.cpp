@@ -3,27 +3,29 @@
 #include "menu.h"
 #include "registro.h"
 
+
 using namespace std;
 
 int main(void) {
 
-   short opcao;
+   short funcaoMenu;
 
-//   fstream arquivo("banco.dbc", ios_base::in | ios_base::binary);
+   fstream banco("banco.dbc", ios_base::in | ios_base::binary);
 
-//   if(arquivo.fail())
-//      criarArquivo();
+   if(banco.fail())
+      criarArquivo();
    do {
-      opcao = menu();
-      switch(opcao) {
-         case 1: registrar();           break;
-         case 2: pesquisarNome();       break;
-         case 3: alterar();             break;
-         case 4: remover();              break;
-         case 5: return 0;              break;
+      funcaoMenu = menu();
+      switch(funcaoMenu) {
+          case 0: return 0;              break;
+          case 1: registrar();           break;
+          case 2: pesquisarNome();       break;
+          case 3: pesquisarCpf();        break;
+          case 4: remover();             break;
+          case 5: alterar();             break;
       }
-   } while (opcao);
+   } while (funcaoMenu);
 
-//   arquivo.close();
+   banco.close();
    return 0;
 }

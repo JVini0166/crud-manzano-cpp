@@ -2,7 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "crud"
+			"path" : "crud.exe"
+		},
+		{
+			"path" : "crud.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -52,7 +55,7 @@
 			[
 				{
 					"backtrace" : 2,
-					"path" : "/home/josevinicius/Documentos/Projects/IFSP/crud-manzano-cpp/crud/."
+					"path" : "C:/Users/Edmundo/Desktop/TI/crud-manzano-cpp/crud2/."
 				}
 			],
 			"language" : "CXX",
@@ -82,12 +85,16 @@
 			{
 				"fragment" : "",
 				"role" : "flags"
+			},
+			{
+				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
+				"role" : "libraries"
 			}
 		],
 		"language" : "CXX"
 	},
 	"name" : "crud",
-	"nameOnDisk" : "crud",
+	"nameOnDisk" : "crud.exe",
 	"paths" : 
 	{
 		"build" : ".",
