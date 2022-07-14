@@ -6,7 +6,7 @@
 
 using namespace std;
 
-struct Cadastro {
+struct Registro {
     char status[2];
     char nome[41];
     char cargo[11];
@@ -15,7 +15,7 @@ struct Cadastro {
     char endereco[60];
 } funcionario;
 
-Cadastro pessoa;
+Registro colaborador;
 char auxnome[41];
 char auxcpf[13];
 char auxtelefone[16];
@@ -263,14 +263,14 @@ void registrar(void) {
     bool existeHierarquia = false;
     cout << " Cadastrar registro\n\n\n";
     cout << " Entre com o nome:\n ";
-    lerstr(pessoa.nome);
+    lerstr(colaborador.nome);
     cout << "\n\n";
     cout << "Entre com o CPF (apenas numeros): ";
-    cin >> pessoa.cpf;
+    cin >> colaborador.cpf;
     cout << "Entre com o telefone: ";
-    cin >> pessoa.telefone;
+    cin >> colaborador.telefone;
     cout << "Entre com o endereco: ";
-    lerstr(pessoa.endereco);
+    lerstr(colaborador.endereco);
     cout << " Entre com o cargo:\n ";
     cout << " [1] Gerente " << endl;
     cout << " [2] Supervisor " << endl;
@@ -280,12 +280,12 @@ void registrar(void) {
     switch (opcargo) {
         case 1:
             existeHierarquia = true;
-            strcpy(pessoa.cargo, "GERENTE");
+            strcpy(colaborador.cargo, "GERENTE");
             break;
         case 2:
             if (buscaCargo("GERENTE")) {
                 existeHierarquia = true;
-                strcpy(pessoa.cargo, "SUPERVISOR");
+                strcpy(colaborador.cargo, "SUPERVISOR");
             } else {
                 cout << "\n\nNecessario cadastrar um GERENTE para poder cadastrar um SUPERVISOR" << endl;
             }
@@ -293,21 +293,21 @@ void registrar(void) {
         case 3:
             if (buscaCargo("SUPERVISOR")) {
                 existeHierarquia = true;
-                strcpy(pessoa.cargo, "ATENDENTE");
+                strcpy(colaborador.cargo, "ATENDENTE");
             } else {
                 cout << "\n\nNecessario cadastrar um SUPERVISOR para poder cadastrar um ATENDENTE" << endl;
             }
             break;
     }
 
-    pessoa.status[0] = '1';
+    colaborador.status[0] = '1';
     if (existeHierarquia) {
         fstream arquivo;
         arquivo.open("empresa.dbc", ios_base::out | ios_base::app |
                                     ios_base::binary);
         arquivo.seekp(0,
                       ios::end);
-        arquivo.write(reinterpret_cast<char *>(&pessoa),
+        arquivo.write(reinterpret_cast<char *>(&colaborador),
                       sizeof(funcionario));
         arquivo.flush();
         arquivo.close();
