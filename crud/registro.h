@@ -3,7 +3,6 @@
 #include <fstream>
 #include <conio.h>
 #include "manzano.h"
-
 using namespace std;
 
 struct Registro {
@@ -259,6 +258,7 @@ void pesquisarCpf(void) {
 }
 
 void registrar(void) {
+    limpa();
     int opcargo;
     bool existeHierarquia = false;
     cout << " Cadastrar registro\n\n\n";
@@ -271,7 +271,7 @@ void registrar(void) {
     cin >> colaborador.telefone;
     cout << "Entre com o endereco: ";
     lerstr(colaborador.endereco);
-    cout << " Entre com o cargo:\n ";
+    cout << "\n Entre com o cargo:\n";
     cout << " [1] Gerente " << endl;
     cout << " [2] Supervisor " << endl;
     cout << " [3] Atendente " << endl;
@@ -349,19 +349,20 @@ void remover(void) {
     } else
         cout << "\n\n Registro nao encontrado. ";
     pausa(0);
+    limpa();
 }
 
 void alterar(void) {
     short opcao;
     string selecao;
     do {
-//        limpa();
+        limpa();
         cout << " Alterar registro\n\n\n";
         cout << " Selecione a opcao:\n\n";
         cout << " [1] - Alterar nome.\n\n";
-        cout << " [2] - Alterar telefone.\n\n\n";
-        cout << " [3] - Alterar CPF.\n\n\n";
-        cout << " [4] - Alterar endereco.\n\n\n";
+        cout << " [2] - Alterar telefone.\n\n";
+        cout << " [3] - Alterar CPF.\n\n";
+        cout << " [4] - Alterar endereco.\n\n";
         cout << " Entre a opcao desejada: ";
         cin >> opcao;
         cin.ignore(80, '\n');
@@ -375,7 +376,7 @@ void alterar(void) {
     } else if (opcao == 4) {
         selecao = "endereco";
     }
-//        limpa();
+    limpa();
     cout << " Alterar " << selecao << " do registro\n\n\n";
     cout << endl;
     cout << " Entre com o nome:\n ";
@@ -405,6 +406,7 @@ void alterar(void) {
         }
         cout << "\n\n\n\n";
         pausa(1);
+        limpa();
     } else {
         cout << endl << "\n Registro nao encontrado. ";
         pausa(0);

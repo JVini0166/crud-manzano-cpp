@@ -2,8 +2,6 @@
 #include <fstream>
 #include "menu.h"
 #include "registro.h"
-
-
 using namespace std;
 
 int main(void) {
