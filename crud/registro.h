@@ -233,6 +233,7 @@ void pesquisarNome(void) {
     } else
         cout << "\n\n Registro nao encontrado. ";
     pausa(0);
+    limpa();
 }
 
 void pesquisarCpf(void) {
@@ -255,6 +256,7 @@ void pesquisarCpf(void) {
     } else
         cout << "\n\n Registro nao encontrado. ";
     pausa(0);
+    limpa();
 }
 
 void registrar(void) {
@@ -314,9 +316,13 @@ void registrar(void) {
         cout << "\n\n";
         existeHierarquia = false;
         pausa(1);
+        cin.get();
+        limpa();
     } else {
         existeHierarquia = false;
         pausa(0);
+        cin.get();
+        limpa();
     }
 }
 
@@ -410,5 +416,6 @@ void alterar(void) {
     } else {
         cout << endl << "\n Registro nao encontrado. ";
         pausa(0);
+        limpa();
     }
 }

@@ -4,7 +4,6 @@ using namespace std;
 short menu(void) {
    short opcao;
    do {
-//      limpa();
       cout << " Menu Principal - Sistema CRUD Empresa\n\n\n";
       cout << " [1] - Cadastrar registro.\n\n";
       cout << " [2] - Pesquisar registro por nome.\n\n";
