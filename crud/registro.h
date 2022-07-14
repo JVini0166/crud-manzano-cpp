@@ -6,22 +6,24 @@
 
 using namespace std;
 
-struct {
-    char cargo[11];
+struct Cadastro {
+    char status[2];
     char nome[41];
+    char cargo[11];
     char cpf[12];
     char telefone[16];
     char endereco[60];
-    char status[2];
-
 } funcionario;
 
+Cadastro pessoa;
 char auxnome[41];
 char auxcpf[13];
+char auxtelefone[16];
+char auxendereco[60];
 
 void criarArquivo(void) {
     fstream arquivo;
-    arquivo.open("empresa.db", ios_base::out | ios_base::binary);
+    arquivo.open("empresa.dbc", ios_base::out | ios_base::binary);
     arquivo.close();
 }
 
@@ -33,8 +35,6 @@ void pausa(short status) {
 }
 
 char upper(char e) {
-
-
     return (97 <= e && e <= 122) ? e - 32 : e;
 }
 
@@ -56,8 +56,59 @@ void lerstr(char *s) {
     *s = '\0';
 }
 
+int encontraPosicaoTelefone(char *pesq) {
+    fstream arquivo("empresa.dbc", ios_base::in | ios_base::binary);
+    unsigned int pos = -1, contador = 0;
+    bool encontrado = false;
+    while (not arquivo.eof() and not encontrado) {
+        arquivo.read(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
+        if (strcmp(pesq, funcionario.telefone) == 0) {
+            encontrado = true;
+            pos = contador;
+        }
+        contador++;
+    }
+    arquivo.flush();
+    arquivo.close();
+    return pos;
+}
+
+int encontraPosicaoCpf(char *pesq) {
+    fstream arquivo("empresa.dbc", ios_base::in | ios_base::binary);
+    unsigned int pos = -1, contador = 0;
+    bool encontrado = false;
+    while (not arquivo.eof() and not encontrado) {
+        arquivo.read(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
+        if (strcmp(pesq, funcionario.cpf) == 0 and funcionario.status[0] == '1') {
+            encontrado = true;
+            pos = contador;
+        }
+        contador++;
+    }
+    arquivo.flush();
+    arquivo.close();
+    return pos;
+}
+
+int encontraPosicaoEndereco(char *pesq) {
+    fstream arquivo("empresa.dbc", ios_base::in | ios_base::binary);
+    unsigned int pos = -1, contador = 0;
+    bool encontrado = false;
+    while (not arquivo.eof() and not encontrado) {
+        arquivo.read(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
+        if (strcmp(pesq, funcionario.endereco) == 0 and funcionario.status[0] == '1') {
+            encontrado = true;
+            pos = contador;
+        }
+        contador++;
+    }
+    arquivo.flush();
+    arquivo.close();
+    return pos;
+}
+
 int encontraPosicao(char *pesq) {
-    fstream arquivo("empresa.db", ios_base::in | ios_base::binary);
+    fstream arquivo("empresa.dbc", ios_base::in | ios_base::binary);
     unsigned int pos = -1, contador = 0;
     bool encontrado = false;
     while (not arquivo.eof() and not encontrado) {
@@ -76,7 +127,7 @@ int encontraPosicao(char *pesq) {
 void excluirPessoa(int pos) {
 
     strcpy(funcionario.status, "0");
-    fstream arquivo("empresa.db", ios_base::in | ios_base::out | ios_base::binary);
+    fstream arquivo("empresa.dbc", ios_base::in | ios_base::out | ios_base::binary);
     arquivo.seekp(pos * sizeof(funcionario));
     arquivo.write(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
     arquivo.flush();
@@ -86,15 +137,45 @@ void excluirPessoa(int pos) {
 void alteraNome(int pos) {
     lerstr(auxnome);
     strcpy(funcionario.nome, auxnome);
-    fstream arquivo("empresa.db", ios_base::in | ios_base::out | ios_base::binary);
+    fstream arquivo("empresa.dbc", ios_base::in | ios_base::out | ios_base::binary);
     arquivo.seekp(pos * sizeof(funcionario));
     arquivo.write(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
     arquivo.flush();
     arquivo.close();
 }
 
+void alteraTelefone(int pos) {
+    lerstr(auxtelefone);
+    strcpy(funcionario.telefone, auxtelefone);
+    fstream arquivo("empresa.dbc", ios_base::in | ios_base::out | ios_base::binary);
+    arquivo.seekp(pos * sizeof(funcionario));
+    arquivo.write(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
+    arquivo.flush();
+    arquivo.close();
+}
+
+void alteraCpf(int pos) {
+    lerstr(auxcpf);
+    strcpy(funcionario.cpf, auxcpf);
+    fstream arquivo("empresa.dbc", ios_base::in | ios_base::out | ios_base::binary);
+    arquivo.seekp(pos * sizeof(funcionario.cpf));
+    arquivo.write(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
+    arquivo.flush();
+    arquivo.close();
+}
+
+void alteraEndereco(int pos) {
+    lerstr(auxendereco);
+    strcpy(funcionario.endereco, auxendereco);
+    fstream arquivo("empresa.dbc", ios_base::in | ios_base::out | ios_base::binary);
+    arquivo.seekp(pos * sizeof(funcionario.endereco));
+    arquivo.write(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
+    arquivo.flush();
+    arquivo.close();
+}
+
 bool buscaNome(char *pesq) {
-    fstream arquivo("empresa.db", ios_base::in | ios_base::binary);
+    fstream arquivo("empresa.dbc", ios_base::in | ios_base::binary);
     bool encontrado = false;
     while (not arquivo.eof() and not encontrado) {
         arquivo.read(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
@@ -107,7 +188,7 @@ bool buscaNome(char *pesq) {
 }
 
 bool buscaCpf(char *pesq) {
-    fstream arquivo("empresa.db", ios_base::in | ios_base::binary);
+    fstream arquivo("empresa.dbc", ios_base::in | ios_base::binary);
     bool encontrado = false;
     while (not arquivo.eof() and not encontrado) {
         arquivo.read(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
@@ -120,7 +201,7 @@ bool buscaCpf(char *pesq) {
 }
 
 bool buscaCargo(char *pesq) {
-    fstream arquivo("empresa.db", ios_base::in | ios_base::binary);
+    fstream arquivo("empresa.dbc", ios_base::in | ios_base::binary);
     bool encontrado = false;
     while (not arquivo.eof() and not encontrado) {
         arquivo.read(reinterpret_cast<char *>(&funcionario), sizeof(funcionario));
@@ -140,15 +221,15 @@ void pesquisarNome(void) {
     lerstr(auxnome);
     cout << "\n\n";
     if (buscaNome(auxnome)) {
-        cout << "Nome Funcionário: " << endl;
+        cout << "Nome Funcionario: " << endl;
         cout << funcionario.nome << endl;
         cout << "Cargo: " << endl;
-        cout << funcionario.cargo;
+        cout << funcionario.cargo << endl;
         cout << "Numero de telefone: " << endl;
         cout << funcionario.telefone << endl;
         cout << "CPF: " << endl;
         cout << funcionario.cpf << endl;
-        cout << "Endereço: " << endl;
+        cout << "Endereco: " << endl;
         cout << funcionario.endereco << endl;
     } else
         cout << "\n\n Registro nao encontrado. ";
@@ -162,15 +243,15 @@ void pesquisarCpf(void) {
     lerstr(auxcpf);
     cout << "\n\n";
     if (buscaCpf(auxcpf)) {
-        cout << "Nome Funcionário: " << endl;
+        cout << "Nome Funcionario: " << endl;
         cout << funcionario.nome << endl;
         cout << "Cargo:" << endl;
-        cout << funcionario.cargo;
+        cout << funcionario.cargo << endl;
         cout << "Numero de telefone: " << endl;
         cout << funcionario.telefone << endl;
         cout << "CPF: " << endl;
         cout << funcionario.cpf << endl;
-        cout << "Endereço: " << endl;
+        cout << "Endereco: " << endl;
         cout << funcionario.endereco << endl;
     } else
         cout << "\n\n Registro nao encontrado. ";
@@ -179,18 +260,17 @@ void pesquisarCpf(void) {
 
 void registrar(void) {
     int opcargo;
-    bool existeHierarquia;
-
+    bool existeHierarquia = false;
     cout << " Cadastrar registro\n\n\n";
     cout << " Entre com o nome:\n ";
-    lerstr(funcionario.nome);
+    lerstr(pessoa.nome);
     cout << "\n\n";
     cout << "Entre com o CPF (apenas numeros): ";
-    cin >> funcionario.cpf;
+    cin >> pessoa.cpf;
     cout << "Entre com o telefone: ";
-    cin >> funcionario.telefone;
+    cin >> pessoa.telefone;
     cout << "Entre com o endereco: ";
-    lerstr(funcionario.endereco);
+    lerstr(pessoa.endereco);
     cout << " Entre com o cargo:\n ";
     cout << " [1] Gerente " << endl;
     cout << " [2] Supervisor " << endl;
@@ -200,12 +280,12 @@ void registrar(void) {
     switch (opcargo) {
         case 1:
             existeHierarquia = true;
-            strcpy(funcionario.cargo, "GERENTE");
+            strcpy(pessoa.cargo, "GERENTE");
             break;
         case 2:
             if (buscaCargo("GERENTE")) {
                 existeHierarquia = true;
-                strcpy(funcionario.cargo, "SUPERVISOR");
+                strcpy(pessoa.cargo, "SUPERVISOR");
             } else {
                 cout << "\n\nNecessario cadastrar um GERENTE para poder cadastrar um SUPERVISOR" << endl;
             }
@@ -213,27 +293,29 @@ void registrar(void) {
         case 3:
             if (buscaCargo("SUPERVISOR")) {
                 existeHierarquia = true;
-                strcpy(funcionario.cargo, "ATENDENTE");
+                strcpy(pessoa.cargo, "ATENDENTE");
             } else {
                 cout << "\n\nNecessario cadastrar um SUPERVISOR para poder cadastrar um ATENDENTE" << endl;
             }
             break;
     }
 
-    funcionario.status[0] = '1';
+    pessoa.status[0] = '1';
     if (existeHierarquia) {
         fstream arquivo;
-        arquivo.open("empresa.db", ios_base::out | ios_base::app |
-                                  ios_base::binary);
+        arquivo.open("empresa.dbc", ios_base::out | ios_base::app |
+                                    ios_base::binary);
         arquivo.seekp(0,
                       ios::end);
-        arquivo.write(reinterpret_cast<char *>(&funcionario),
+        arquivo.write(reinterpret_cast<char *>(&pessoa),
                       sizeof(funcionario));
         arquivo.flush();
         arquivo.close();
         cout << "\n\n";
+        existeHierarquia = false;
         pausa(1);
     } else {
+        existeHierarquia = false;
         pausa(0);
     }
 }
@@ -246,7 +328,16 @@ void remover(void) {
     lerstr(auxnome);
     cout << "\n\n";
     if (buscaNome(auxnome)) {
-        cout << " Telefone .....: " << funcionario.telefone << "\n\n\n\n";
+        cout << "Nome Funcionario: " << endl;
+        cout << funcionario.nome << endl;
+        cout << "Cargo: " << endl;
+        cout << funcionario.cargo << endl;
+        cout << "Numero de telefone: " << endl;
+        cout << funcionario.telefone << endl;
+        cout << "CPF: " << endl;
+        cout << funcionario.cpf << endl;
+        cout << "Endereco: " << endl;
+        cout << funcionario.endereco << endl << endl;
         cout << " Remover cadastro [S]im ou [N]ao: ";
         cin >> opcao;
         cin.ignore(80, '\n');
@@ -268,13 +359,22 @@ void alterar(void) {
         cout << " Alterar registro\n\n\n";
         cout << " Selecione a opcao:\n\n";
         cout << " [1] - Alterar nome.\n\n";
-        cout << " [2] - Alterar data de nascimento.\n\n\n";
+        cout << " [2] - Alterar telefone.\n\n\n";
+        cout << " [3] - Alterar CPF.\n\n\n";
+        cout << " [4] - Alterar endereco.\n\n\n";
         cout << " Entre a opcao desejada: ";
         cin >> opcao;
         cin.ignore(80, '\n');
-    } while (opcao != 1 and opcao != 2);
-    if (opcao == 1) selecao = "nome";
-    else selecao = "data";
+    } while (opcao != 1 and opcao != 2 and opcao != 3 and opcao != 4);
+    if (opcao == 1) {
+        selecao = "nome";
+    } else if (opcao == 2) {
+        selecao = "telefone";
+    } else if (opcao == 3) {
+        selecao = "CPF";
+    } else if (opcao == 4) {
+        selecao = "endereco";
+    }
 //        limpa();
     cout << " Alterar " << selecao << " do registro\n\n\n";
     cout << endl;
@@ -282,15 +382,26 @@ void alterar(void) {
     lerstr(auxnome);
     cout << "\n\n";
     if (buscaNome(auxnome)) {
-
         if (opcao == 1) {
-            cout << " Telefone:\n ";
-            cout << funcionario.telefone << "\n\n";
+            cout << " Nome:\n ";
+            cout << funcionario.nome << "\n\n";
             cout << " Entre o novo nome:\n ";
             alteraNome(encontraPosicao(auxnome));
-        } else {
-
-
+        } else if (opcao == 2) {
+            cout << " Telefone:\n ";
+            cout << funcionario.telefone << "\n\n";
+            cout << " Entre o novo telefone:\n ";
+            alteraTelefone(encontraPosicaoTelefone(funcionario.telefone));
+        } else if (opcao == 3) {
+            cout << " CPF:\n ";
+            cout << funcionario.cpf << "\n\n";
+            cout << " Entre o novo cpf:\n ";
+            alteraCpf(encontraPosicaoCpf(funcionario.cpf));
+        } else if (opcao == 4) {
+            cout << " Endereco:\n ";
+            cout << funcionario.endereco << "\n\n";
+            cout << " Entre o novo endereco:\n ";
+            alteraEndereco(encontraPosicaoEndereco(funcionario.endereco));
         }
         cout << "\n\n\n\n";
         pausa(1);

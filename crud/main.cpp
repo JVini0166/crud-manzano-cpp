@@ -10,7 +10,7 @@ int main(void) {
 
    short funcaoMenu;
 
-   fstream banco("empresa.db", ios_base::in | ios_base::binary);
+   fstream banco("empresa.dbc", ios_base::in | ios_base::binary);
 
    if(banco.fail())
       criarArquivo();

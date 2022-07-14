@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/Edmundo/Desktop/TI/crud-manzano-cpp/crud2/main.cpp" "CMakeFiles/crud.dir/main.cpp.obj" "gcc" "CMakeFiles/crud.dir/main.cpp.obj.d"
+  "C:/Users/Edmundo/Desktop/crud-manzano-cpp-main/crud-manzano-cpp-main/crud/main.cpp" "CMakeFiles/crud.dir/main.cpp.obj" "gcc" "CMakeFiles/crud.dir/main.cpp.obj.d"
   )
 
 # Targets to which this target links.

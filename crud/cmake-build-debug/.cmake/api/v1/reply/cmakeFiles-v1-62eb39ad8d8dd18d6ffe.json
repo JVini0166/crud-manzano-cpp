@@ -767,8 +767,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "C:/Users/Edmundo/Desktop/TI/crud-manzano-cpp/crud2/cmake-build-debug",
-		"source" : "C:/Users/Edmundo/Desktop/TI/crud-manzano-cpp/crud2"
+		"build" : "C:/Users/Edmundo/Desktop/crud-manzano-cpp-main/crud-manzano-cpp-main/crud/cmake-build-debug",
+		"source" : "C:/Users/Edmundo/Desktop/crud-manzano-cpp-main/crud-manzano-cpp-main/crud"
 	},
 	"version" : 
 	{

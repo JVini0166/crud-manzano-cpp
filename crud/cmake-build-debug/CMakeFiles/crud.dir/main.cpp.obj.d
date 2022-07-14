@@ -1,5 +1,5 @@
 CMakeFiles/crud.dir/main.cpp.obj: \
- C:\Users\Edmundo\Desktop\TI\crud-manzano-cpp\crud2\main.cpp \
+ C:\Users\Edmundo\Desktop\crud-manzano-cpp-main\crud-manzano-cpp-main\crud\main.cpp \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/iostream \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32/bits/os_defines.h \
@@ -137,14 +137,14 @@ CMakeFiles/crud.dir/main.cpp.obj: \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32/bits/basic_file.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32/bits/c++io.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/fstream.tcc \
- C:\Users\Edmundo\Desktop\TI\crud-manzano-cpp\crud2\menu.h \
- C:\Users\Edmundo\Desktop\TI\crud-manzano-cpp\crud2\registro.h \
+ C:\Users\Edmundo\Desktop\crud-manzano-cpp-main\crud-manzano-cpp-main\crud\menu.h \
+ C:\Users\Edmundo\Desktop\crud-manzano-cpp-main\crud-manzano-cpp-main\crud\registro.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/cstring \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/x86_64-w64-mingw32/include/string.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/x86_64-w64-mingw32/include/sec_api/string_s.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/x86_64-w64-mingw32/include/conio.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/x86_64-w64-mingw32/include/sec_api/conio_s.h \
- C:\Users\Edmundo\Desktop\TI\crud-manzano-cpp\crud2\manzano.h \
+ C:\Users\Edmundo\Desktop\crud-manzano-cpp-main\crud-manzano-cpp-main\crud\manzano.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/x86_64-w64-mingw32/include/windows.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/x86_64-w64-mingw32/include/sdkddkver.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/x86_64-w64-mingw32/include/excpt.h \

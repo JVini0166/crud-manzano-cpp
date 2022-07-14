@@ -53,10 +53,10 @@ RM = "C:\Program Files\JetBrains\CLion 2022.1.3\bin\cmake\win\bin\cmake.exe" -E 
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\Edmundo\Desktop\TI\crud-manzano-cpp\crud2
+CMAKE_SOURCE_DIR = C:\Users\Edmundo\Desktop\crud-manzano-cpp-main\crud-manzano-cpp-main\crud
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\Edmundo\Desktop\TI\crud-manzano-cpp\crud2\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\Edmundo\Desktop\crud-manzano-cpp-main\crud-manzano-cpp-main\crud\cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -80,14 +80,14 @@ clean: CMakeFiles/crud.dir/clean
 CMakeFiles/crud.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\crud.dir\build.make CMakeFiles/crud.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\crud.dir\build.make CMakeFiles/crud.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\Edmundo\Desktop\TI\crud-manzano-cpp\crud2\cmake-build-debug\CMakeFiles --progress-num=1,2 "Built target crud"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\Edmundo\Desktop\crud-manzano-cpp-main\crud-manzano-cpp-main\crud\cmake-build-debug\CMakeFiles --progress-num=1,2 "Built target crud"
 .PHONY : CMakeFiles/crud.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/crud.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Edmundo\Desktop\TI\crud-manzano-cpp\crud2\cmake-build-debug\CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Edmundo\Desktop\crud-manzano-cpp-main\crud-manzano-cpp-main\crud\cmake-build-debug\CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/crud.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Edmundo\Desktop\TI\crud-manzano-cpp\crud2\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Edmundo\Desktop\crud-manzano-cpp-main\crud-manzano-cpp-main\crud\cmake-build-debug\CMakeFiles 0
 .PHONY : CMakeFiles/crud.dir/rule
 
 # Convenience name for target.

@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/Edmundo/Desktop/TI/crud-manzano-cpp/crud2
+# Install script for directory: C:/Users/Edmundo/Desktop/crud-manzano-cpp-main/crud-manzano-cpp-main/crud
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/Edmundo/Desktop/TI/crud-manzano-cpp/crud2/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Edmundo/Desktop/crud-manzano-cpp-main/crud-manzano-cpp-main/crud/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
